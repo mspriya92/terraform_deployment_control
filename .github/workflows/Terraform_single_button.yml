@@ -30,8 +30,9 @@ jobs:
       (inputs.deploy == 'infra-deploy' || inputs.deploy == 'full')
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Running infra deploy"
-
+      - run: |
+          echo "Running infra deploy"
+          exit 1
   code-deploy:
     needs: [terraform-destroy, infra-deploy]
     if: >
