@@ -17,7 +17,7 @@ on:
 
 jobs:
   terraform-destroy:
-    if: ${{ inputs.terraform_delete }}
+  #  if: ${{ inputs.terraform_delete }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Running terraform destroy"
