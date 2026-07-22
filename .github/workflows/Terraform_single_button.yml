@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Running terraform destroy"
-      - run: exit 1
+     # - run: exit 1
   infra-deploy:
     needs: terraform-destroy
     if: >
