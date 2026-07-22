@@ -1,1 +1,44 @@
+on:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: 'Deployment type'
+        required: true
+        type: choice
+        options:
+          - infra-deploy
+          - code-deploy
+          - full
+      terraform_delete:
+        description: 'Run terraform destroy first'
+        required: false
+        type: boolean
+        default: false
 
+jobs:
+  terraform-destroy:
+    if: ${{ inputs.terraform_delete }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running terraform destroy"
+
+  infra-deploy:
+    needs: terraform-destroy
+    if: |
+      always() &&
+      (needs.terraform-destroy.result == 'success' || needs.terraform-destroy.result == 'skipped') &&
+      (inputs.deploy == 'infra-deploy' || inputs.deploy == 'full')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running infra deploy"
+
+  code-deploy:
+    needs: [terraform-destroy, infra-deploy]
+    if: |
+      always() &&
+      (needs.terraform-destroy.result == 'success' || needs.terraform-destroy.result == 'skipped') &&
+      (needs.infra-deploy.result == 'success' || needs.infra-deploy.result == 'skipped') &&
+      (inputs.deploy == 'code-deploy' || inputs.deploy == 'full')
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running code deploy"
