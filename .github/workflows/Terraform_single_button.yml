@@ -10,7 +10,7 @@ on:
           - code-deploy
           - full
       terraform_delete:
-        description: 'Run terraform destroy first'
+        description: 'terraform delete'
         required: false
         type: boolean
         default: false
@@ -24,7 +24,7 @@ jobs:
 
   infra-deploy:
     needs: terraform-destroy
-    if: |
+    if: >
       always() &&
       (needs.terraform-destroy.result == 'success' || needs.terraform-destroy.result == 'skipped') &&
       (inputs.deploy == 'infra-deploy' || inputs.deploy == 'full')
@@ -34,7 +34,7 @@ jobs:
 
   code-deploy:
     needs: [terraform-destroy, infra-deploy]
-    if: |
+    if: >
       always() &&
       (needs.terraform-destroy.result == 'success' || needs.terraform-destroy.result == 'skipped') &&
       (needs.infra-deploy.result == 'success' || needs.infra-deploy.result == 'skipped') &&
