@@ -40,6 +40,7 @@ jobs:
     needs: [ validate-inputs, terraform-destroy ]
     if: >
       always() &&
+      needs.validate-inputs.result == 'success' &&
       (needs.terraform-destroy.result == 'success' || needs.terraform-destroy.result == 'skipped') &&
       (inputs.deploy == 'infra-deploy' || inputs.deploy == 'full')
      
@@ -52,6 +53,7 @@ jobs:
     needs: [validate-inputs, terraform-destroy, infra-deploy]
     if: >
       always() &&
+      needs.validate-inputs.result == 'success' &&
       (needs.terraform-destroy.result == 'success' || needs.terraform-destroy.result == 'skipped') &&
       (needs.infra-deploy.result == 'success' || needs.infra-deploy.result == 'skipped') &&
       (inputs.deploy == 'code-deploy' || inputs.deploy == 'full')
