@@ -18,7 +18,12 @@ on:
 
 jobs:
   terraform-destroy:
-    if: ${{ inputs.terraform_delete }}
+    #if: ${{ inputs.terraform_delete }}
+    if: >
+      ${{
+        inputs.terraform_delete &&
+        inputs.deploy != 'code-deploy'
+      }}
     runs-on: ubuntu-latest
     steps:
       - run: |
