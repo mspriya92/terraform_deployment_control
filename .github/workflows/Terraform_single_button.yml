@@ -22,7 +22,7 @@ jobs:
     steps:
       - run: |
             echo "Running terraform destroy"
-            exit 1
+            #exit 1
             
   infra-deploy:
     needs: terraform-destroy
