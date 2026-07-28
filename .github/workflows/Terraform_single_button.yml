@@ -20,8 +20,10 @@ jobs:
     if: ${{ inputs.terraform_delete }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Running terraform destroy"
-     # - run: exit 1
+      - run: |
+            echo "Running terraform destroy"
+            exit 1
+            
   infra-deploy:
     needs: terraform-destroy
     if: >
@@ -32,7 +34,7 @@ jobs:
     steps:
       - run: |
           echo "Running infra deploy"
-          exit 1
+          #exit 1
   code-deploy:
     needs: [terraform-destroy, infra-deploy]
     if: >
