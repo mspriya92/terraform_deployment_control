@@ -8,7 +8,7 @@ on:
         options:
           - infra-deploy
           - code-deploy
-          - infra-and-code
+          #- infra-and-code
           - full
       terraform_delete:
         description: 'terraform delete'
@@ -30,7 +30,8 @@ jobs:
     if: >
       always() &&
       (needs.terraform-destroy.result == 'success' || needs.terraform-destroy.result == 'skipped') &&
-      (inputs.deploy == 'infra-deploy' || inputs.deploy == 'infra-and-code' || inputs.deploy == 'full')
+      (inputs.deploy == 'infra-deploy' || inputs.deploy == 'full')
+     
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -42,7 +43,7 @@ jobs:
       always() &&
       (needs.terraform-destroy.result == 'success' || needs.terraform-destroy.result == 'skipped') &&
       (needs.infra-deploy.result == 'success' || needs.infra-deploy.result == 'skipped') &&
-      (inputs.deploy == 'code-deploy' || inputs.deploy == 'infra-and-code' || inputs.deploy == 'full')
+      (inputs.deploy == 'code-deploy' || inputs.deploy == 'full')
 
     runs-on: ubuntu-latest
     steps:
