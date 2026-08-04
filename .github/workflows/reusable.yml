@@ -1,0 +1,35 @@
+name: Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print received branch
+        run: |
+          echo "Input branch = ${{ inputs.branch }}"
+
+      - name: Checkout requested branch
+        uses: actions/checkout@v4
+        with:
+          repository: mspriya92/Terraform_deployment_control
+          ref: ${{ inputs.branch }}
+
+      - name: Show checked-out branch
+        run: |
+          echo "Current Branch:"
+          git rev-parse --abbrev-ref HEAD
+
+          echo "Latest Commit:"
+          git log --oneline -1
+
+      - name: Display version file
+        run: |
+          cat version.txt
